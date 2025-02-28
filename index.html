@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Recipe Gallery</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0D0D0D, #1A1A1A);
+            font-family: 'Poppins', sans-serif;
+            color: WHITE;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            width: 60%;
+            max-width: 900px;
+        }
+
+        .gallery-item {
+            text-align: center;
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 12px;
+            transition: transform 0.3s ease-in-out;
+            background: #222;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            border-radius: 12px;
+            transition: transform 0.3s ease-in-out, filter 0.3s;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+            filter: brightness(85%);
+        }
+
+        .caption {
+            font-size: 14px;
+            color: white;
+            padding: 10px 0;
+            text-align: left;
+        }
+
+        .caption h3 {
+            margin-bottom: 5px;
+            font-size: 18px;
+        }
+
+        .caption ul {
+            list-style-type: disc;
+            padding-left: 15px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            color: black;
+            padding: 20px;
+            border-radius: 10px;
+            width: 60%;
+            text-align: center;
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 30px;
+            font-size: 30px;
+            color: red;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        #recipe-title {
+            color: #ffb84e;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        #recipe-text {
+            color: #333;
+            font-size: 16px;
+        }
+        h3{
+            font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>TALES OF TASTE </h1>
+    <h3> RECIPE GALLERY</h3>
+
+    <div class="gallery">
+        <div class="gallery-item" onclick="openRecipe('recipe1')">
+            <img src="/Users/aayusha/Downloads/iloveimg-converted (1)/IMG_3725 2.jpg" alt="Laphing">
+            <div class="caption">
+                <h3>Laphing (Tibetan Snack)</h3>
+                <strong>Ingredients:</strong>
+                <ul>
+                    <li>1 cup mung bean starch</li>
+                    <li>4 cups water</li>
+                    <li>2 tbsp soy sauce</li>
+                    <li>1 tbsp vinegar</li>
+                    <li>1 tsp chili flakes</li>
+                    <li>1 tbsp sesame oil</li>
+                    <li>Salt to taste</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="gallery-item" onclick="openRecipe('recipe2')">
+            <img src="/Users/aayusha/Downloads/iloveimg-converted (1)/IMG_1294 2.jpg" alt="Chatpate">
+            <div class="caption">
+                <h3>Chatpate (Puffed Rice Snack)</h3>
+                <strong>Ingredients:</strong>
+                <ul>
+                    <li>2 cups puffed rice</li>
+                    <li>½ cup boiled potatoes (diced)</li>
+                    <li>½ cup chopped onions</li>
+                    <li>½ cup chopped tomatoes</li>
+                    <li>1 pack Wai Wai noodles (crushed)</li>
+                    <li>2 tbsp lemon juice</li>
+                    <li>1 tbsp mustard oil</li>
+                    <li>Salt & spices to taste</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="gallery-item" onclick="openRecipe('recipe3')">
+            <img src="/Users/aayusha/Downloads/iloveimg-converted (1)/IMG_4004 2.jpg" alt="Chicken Sadeko">
+            <div class="caption">
+                <h3>Chicken Sadeko</h3>
+                <strong>Ingredients:</strong>
+                <ul>
+                    <li>2 cups boiled and shredded chicken</li>
+                    <li>½ cup chopped onions</li>
+                    <li>½ cup chopped tomatoes</li>
+                    <li>2 tbsp mustard oil</li>
+                    <li>2 tbsp lemon juice</li>
+                    <li>1 tsp cumin powder</li>
+                    <li>1 tsp red chili powder</li>
+                    <li>Salt to taste</li>
+                    <li>Fresh coriander leaves for garnish</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="recipe-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeRecipe()">&times;</span>
+            <h2 id="recipe-title"></h2>
+            <p id="recipe-text"></p>
+        </div>
+    </div>
+
+    <script>
+        const recipes = {
+            recipe1: {
+                title: "Laphing",
+                text: "1. Mix mung bean starch with water.\n2. Cook until thick, then let it cool.\n3. Cut into strips and mix with sauce.\n4. Serve cold with chili flakes."
+            },
+            recipe2: {
+                title: "Chatpate",
+                text: "1. Mix puffed rice, crushed noodles, and veggies.\n2. Add mustard oil, lemon juice, and spices.\n3. Toss well and serve fresh."
+            },
+            recipe3: {
+                title: "Chicken Sadeko",
+                text: "1. Shred boiled chicken and mix with onions and tomatoes.\n2. Add mustard oil, lemon juice, and spices.\n3. Toss well and garnish with coriander leaves."
+            }
+        };
+
+        function openRecipe(recipeKey) {
+            document.getElementById("recipe-title").innerText = recipes[recipeKey].title;
+            document.getElementById("recipe-text").innerText = recipes[recipeKey].text;
+            document.getElementById("recipe-modal").style.display = "flex";
+        }
+
+        function closeRecipe() {
+            document.getElementById("recipe-modal").style.display = "none";
+        }
+    </script>
+
+</body>
+
+</html>
